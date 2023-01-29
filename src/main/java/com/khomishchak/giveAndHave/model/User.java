@@ -37,4 +37,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "transaction_id"))
     private Set<Transaction> transactions;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Task> tasks;
 }

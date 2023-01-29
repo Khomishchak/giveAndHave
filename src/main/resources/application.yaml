@@ -12,3 +12,6 @@ spring:
         dialect: "org.hibernate.dialect.PostgreSQL9Dialect"
         format_sql: false
         globally_quoted_identifiers: true
+#  security:
+#    user:
+#      password: 1111

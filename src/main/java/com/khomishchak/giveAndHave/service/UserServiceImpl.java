@@ -1,5 +1,6 @@
 package com.khomishchak.giveAndHave.service;
 
+import com.khomishchak.giveAndHave.model.Task;
 import com.khomishchak.giveAndHave.model.Transaction;
 import com.khomishchak.giveAndHave.model.User;
 import com.khomishchak.giveAndHave.repository.UserRepository;
@@ -8,10 +9,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -21,6 +19,12 @@ public class UserServiceImpl implements UserService{
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    @Override
+    public List<User> getUsers() {
+
+        return userRepository.findAll();
     }
 
     @Override
@@ -43,13 +47,16 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Optional<User> findById(Long id) {
+    public User findById(Long id) throws ChangeSetPersister.NotFoundException {
 
-        return userRepository.findById(id);
+        User user = userRepository.findById(id)
+                .orElseThrow(ChangeSetPersister.NotFoundException::new);
+
+        return user;
     }
 
     @Override
-    public Transaction assignTransactionToUsers(User sender, User receiver, Transaction transaction) {
+    public boolean assignTransactionToUsers(User sender, User receiver, Transaction transaction) {
 
         Set<Transaction> senderTransactions = sender.getTransactions();
         Set<Transaction> receiverTransactions = receiver.getTransactions();
@@ -63,6 +70,6 @@ public class UserServiceImpl implements UserService{
         userRepository.save(sender);
         userRepository.save(receiver);
 
-        return transaction;
+        return true;
     }
 }

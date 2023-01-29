@@ -5,12 +5,10 @@ import com.khomishchak.giveAndHave.model.User;
 import com.khomishchak.giveAndHave.repository.TransactionRepository;
 import com.khomishchak.giveAndHave.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Optional;
 
 @Service
 public class TransactionServiceImpl implements TransactionService{
