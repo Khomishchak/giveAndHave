@@ -1,5 +1,6 @@
 package com.khomishchak.giveAndHave.service;
 
+import com.khomishchak.giveAndHave.dto.UserDto;
 import com.khomishchak.giveAndHave.model.Task;
 import com.khomishchak.giveAndHave.model.Transaction;
 import com.khomishchak.giveAndHave.model.User;
@@ -7,6 +8,7 @@ import com.khomishchak.giveAndHave.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -15,23 +17,30 @@ import java.util.*;
 public class UserServiceImpl implements UserService{
 
     private UserRepository userRepository;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
-    public List<User> getUsers() {
+    public UserDto createUser(UserDto userDto) {
 
-        return userRepository.findAll();
-    }
+        User user = User.builder()
+                .name(userDto.getName())
+                .password(bCryptPasswordEncoder.encode(userDto.getPassword()))
+                .email(userDto.getEmail())
+                .groupName(userDto.getGroupName())
+                .age(userDto.getAge())
+                .balance(userDto.getBalance())
+                .isVerified(userDto.isVerified())
+                .transactions(userDto.getTransactions())
+                .tasks(userDto.getTasks())
+                .build();
 
-    @Override
-    public User saveUser(User user) {
-
-        user.setTransactions(new HashSet<>());
-        return userRepository.save(user);
+        return userRepository.save(user).toDto();
     }
 
     @Override

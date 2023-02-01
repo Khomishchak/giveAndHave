@@ -1,5 +1,6 @@
 package com.khomishchak.giveAndHave.service;
 
+import com.khomishchak.giveAndHave.dto.UserDto;
 import com.khomishchak.giveAndHave.model.Task;
 import com.khomishchak.giveAndHave.model.Transaction;
 import com.khomishchak.giveAndHave.model.User;
@@ -12,9 +13,7 @@ import java.util.Optional;
 @Service
 public interface UserService {
 
-    public List<User> getUsers();
-
-    public User saveUser(User user);
+    public UserDto createUser(UserDto userDto);
 
     public boolean deleteUser(Long id);
 

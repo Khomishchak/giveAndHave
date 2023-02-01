@@ -1,5 +1,6 @@
 package com.khomishchak.giveAndHave.model;
 
+import com.khomishchak.giveAndHave.dto.UserDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,9 +27,9 @@ public class User {
     private String groupName;
 
     private int age;
-    private int balance = 100;
+    private int balance;
 
-    private boolean isVerified = false;
+    private boolean isVerified;
 
     @ManyToMany
     @JoinTable(
@@ -39,4 +40,18 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Task> tasks;
+
+    public UserDto toDto () {
+        return UserDto.builder()
+                .name(name)
+                .password(password)
+                .email(email)
+                .groupName(groupName)
+                .age(age)
+                .balance(balance)
+                .isVerified(isVerified)
+                .transactions(transactions)
+                .tasks(tasks)
+                .build();
+    }
 }

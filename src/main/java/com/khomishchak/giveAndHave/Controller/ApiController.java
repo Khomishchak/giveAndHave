@@ -1,5 +1,6 @@
 package com.khomishchak.giveAndHave.Controller;
 
+import com.khomishchak.giveAndHave.dto.UserDto;
 import com.khomishchak.giveAndHave.model.Task;
 import com.khomishchak.giveAndHave.model.Transaction;
 import com.khomishchak.giveAndHave.model.User;
@@ -29,9 +30,9 @@ public class ApiController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody User user) {
+    public ResponseEntity<?> create(@RequestBody UserDto userDto) {
 
-        userService.saveUser(user);
+        userService.createUser(userDto);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -84,6 +85,4 @@ public class ApiController {
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
-
 }
