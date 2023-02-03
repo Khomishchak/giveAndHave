@@ -30,59 +30,37 @@ public class ApiController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody UserDto userDto) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDto create(@RequestBody UserDto userDto) {
 
-        userService.createUser(userDto);
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return userService.createUser(userDto);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.OK)
+    public void delete(@PathVariable Long id) {
 
-        boolean isRemoved = userService.deleteUser(id);
-
-        if(!isRemoved) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        userService.deleteUser(id);
     }
 
     @PostMapping("/transaction/{senderId}/{receiverId}/{cost}")
-    public ResponseEntity<?> makeTransaction(@PathVariable Long senderId, @PathVariable Long receiverId,
+    @ResponseStatus(HttpStatus.OK)
+    public Transaction makeTransaction(@PathVariable Long senderId, @PathVariable Long receiverId,
                                              @PathVariable int cost) {
-        User sender;
-        User receiver;
 
-        try{
-            sender = userService.findById(senderId);
-            receiver = userService.findById(receiverId);
-        }catch (ChangeSetPersister.NotFoundException exception) {
-
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        User sender = userService.findById(senderId);
+        User receiver = userService.findById(receiverId);
 
         Transaction transaction = transactionService.createTransaction(sender, receiver, cost);
-        userService.assignTransactionToUsers(sender, receiver, transaction);
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return userService.assignTransactionToUsers(sender, receiver, transaction);
     }
 
     @PostMapping("/create-task/{userId}")
-    public ResponseEntity<?> createTask(@RequestBody Task task, @PathVariable Long userId) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public Task createTask(@RequestBody Task task, @PathVariable Long userId) {
 
-        User user;
+        User user = userService.findById(userId);
 
-        try{
-            user = userService.findById(userId);
-        }catch (ChangeSetPersister.NotFoundException exception) {
-
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        Task createdTask = taskService.createTask(task, user);
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return taskService.createTask(task, user);
     }
 }

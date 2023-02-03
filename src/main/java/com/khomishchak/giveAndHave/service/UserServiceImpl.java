@@ -44,28 +44,20 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public boolean deleteUser(Long id) {
+    public void deleteUser(Long id) {
 
-        try {
-            userRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException exception) {
-            return false;
-        }
-
-        return true;
+        findByIdOrThrowException(id);
+        userRepository.deleteById(id);
     }
 
     @Override
-    public User findById(Long id) throws ChangeSetPersister.NotFoundException {
+    public User findById(Long id){
 
-        User user = userRepository.findById(id)
-                .orElseThrow(ChangeSetPersister.NotFoundException::new);
-
-        return user;
+        return findByIdOrThrowException(id);
     }
 
     @Override
-    public boolean assignTransactionToUsers(User sender, User receiver, Transaction transaction) {
+    public Transaction assignTransactionToUsers(User sender, User receiver, Transaction transaction) {
 
         Set<Transaction> senderTransactions = sender.getTransactions();
         Set<Transaction> receiverTransactions = receiver.getTransactions();
@@ -79,6 +71,12 @@ public class UserServiceImpl implements UserService{
         userRepository.save(sender);
         userRepository.save(receiver);
 
-        return true;
+        return transaction;
+    }
+
+    private User findByIdOrThrowException(Long id) {
+
+        return userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User not found!"));
     }
 }

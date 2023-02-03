@@ -15,10 +15,10 @@ public interface UserService {
 
     public UserDto createUser(UserDto userDto);
 
-    public boolean deleteUser(Long id);
+    public void deleteUser(Long id);
 
-    public User findById(Long id) throws ChangeSetPersister.NotFoundException;
+    public User findById(Long id);
 
 
-    public boolean assignTransactionToUsers(User sender, User receiver, Transaction transaction);
+    public Transaction assignTransactionToUsers(User sender, User receiver, Transaction transaction);
 }
