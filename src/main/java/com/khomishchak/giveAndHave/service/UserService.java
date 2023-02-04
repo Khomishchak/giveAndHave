@@ -4,6 +4,8 @@ import com.khomishchak.giveAndHave.dto.UserDto;
 import com.khomishchak.giveAndHave.model.Task;
 import com.khomishchak.giveAndHave.model.Transaction;
 import com.khomishchak.giveAndHave.model.User;
+import com.khomishchak.giveAndHave.model.security.AuthenticationResponse;
+import com.khomishchak.giveAndHave.model.security.LoginRequest;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +15,15 @@ import java.util.Optional;
 @Service
 public interface UserService {
 
-    public UserDto createUser(UserDto userDto);
+    public AuthenticationResponse createUser(UserDto userDto);
+
+    public AuthenticationResponse authenticate(LoginRequest loginRequest);
 
     public void deleteUser(Long id);
 
     public User findById(Long id);
+
+    public User findByName(String name);
 
 
     public Transaction assignTransactionToUsers(User sender, User receiver, Transaction transaction);

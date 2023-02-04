@@ -4,18 +4,17 @@ import com.khomishchak.giveAndHave.dto.UserDto;
 import com.khomishchak.giveAndHave.model.Task;
 import com.khomishchak.giveAndHave.model.Transaction;
 import com.khomishchak.giveAndHave.model.User;
+import com.khomishchak.giveAndHave.model.security.AuthenticationResponse;
 import com.khomishchak.giveAndHave.service.TaskService;
 import com.khomishchak.giveAndHave.service.TransactionService;
 import com.khomishchak.giveAndHave.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/")
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 public class ApiController {
 
     private UserService userService;
@@ -31,9 +30,14 @@ public class ApiController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto create(@RequestBody UserDto userDto) {
+    public AuthenticationResponse create(@RequestBody UserDto userDto) {
 
         return userService.createUser(userDto);
+    }
+
+    @GetMapping("/hello")
+    public ResponseEntity<String> hello() {
+        return ResponseEntity.ok("Hello World");
     }
 
     @DeleteMapping("/delete/{id}")

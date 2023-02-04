@@ -2,6 +2,7 @@ package com.khomishchak.giveAndHave.dto;
 
 import com.khomishchak.giveAndHave.model.Task;
 import com.khomishchak.giveAndHave.model.Transaction;
+import com.khomishchak.giveAndHave.model.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +31,8 @@ public class UserDto {
     private int balance = 100;
 
     private boolean isVerified = false;
+
+    private UserRole userRole;
 
     private Set<Transaction> transactions = new HashSet<>();
 

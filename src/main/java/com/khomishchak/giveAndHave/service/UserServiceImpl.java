@@ -4,10 +4,16 @@ import com.khomishchak.giveAndHave.dto.UserDto;
 import com.khomishchak.giveAndHave.model.Task;
 import com.khomishchak.giveAndHave.model.Transaction;
 import com.khomishchak.giveAndHave.model.User;
+import com.khomishchak.giveAndHave.model.UserRole;
+import com.khomishchak.giveAndHave.model.security.AuthenticationResponse;
+import com.khomishchak.giveAndHave.model.security.LoginRequest;
 import com.khomishchak.giveAndHave.repository.UserRepository;
+import com.khomishchak.giveAndHave.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,15 +24,20 @@ public class UserServiceImpl implements UserService{
 
     private UserRepository userRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private JwtService jwtService;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
+                           JwtService jwtService, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
     }
 
     @Override
-    public UserDto createUser(UserDto userDto) {
+    public AuthenticationResponse createUser(UserDto userDto) {
 
         User user = User.builder()
                 .name(userDto.getName())
@@ -38,9 +49,33 @@ public class UserServiceImpl implements UserService{
                 .isVerified(userDto.isVerified())
                 .transactions(userDto.getTransactions())
                 .tasks(userDto.getTasks())
+                .userRole(UserRole.ROLE_USER)
                 .build();
 
-        return userRepository.save(user).toDto();
+        userRepository.save(user);
+
+        String jwtToken = jwtService.getToken(new UserDetailsImpl(user));
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
+    }
+
+    @Override
+    public AuthenticationResponse authenticate(LoginRequest loginRequest) {
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getName(),
+                        loginRequest.getPassword()
+                )
+        );
+
+        User user = findByName(loginRequest.getName());
+        String jwtToken = jwtService.getToken(new UserDetailsImpl(user));
+
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
     }
 
     @Override
@@ -54,6 +89,12 @@ public class UserServiceImpl implements UserService{
     public User findById(Long id){
 
         return findByIdOrThrowException(id);
+    }
+
+    @Override
+    public User findByName(String name) {
+
+        return findByNameOrThrowException(name);
     }
 
     @Override
@@ -77,6 +118,12 @@ public class UserServiceImpl implements UserService{
     private User findByIdOrThrowException(Long id) {
 
         return userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User not found!"));
+    }
+
+    private User findByNameOrThrowException(String name) {
+
+        return userRepository.findByName(name)
                 .orElseThrow(() -> new IllegalArgumentException("User not found!"));
     }
 }

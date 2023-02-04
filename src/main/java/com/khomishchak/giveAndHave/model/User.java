@@ -31,6 +31,9 @@ public class User {
 
     private boolean isVerified;
 
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
+
     @ManyToMany
     @JoinTable(
             name = "transaction_users",
