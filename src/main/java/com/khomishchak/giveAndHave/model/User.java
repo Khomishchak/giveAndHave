@@ -27,9 +27,9 @@ public class User {
     private String groupName;
 
     private int age;
-    private int balance;
+    private int balance = 100;
 
-    private boolean isVerified;
+    private boolean isVerified = false;
 
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
@@ -51,8 +51,6 @@ public class User {
                 .email(email)
                 .groupName(groupName)
                 .age(age)
-                .balance(balance)
-                .isVerified(isVerified)
                 .transactions(transactions)
                 .tasks(tasks)
                 .build();

@@ -1,43 +1,28 @@
 package com.khomishchak.giveAndHave.Controller;
 
-import com.khomishchak.giveAndHave.dto.UserDto;
 import com.khomishchak.giveAndHave.model.Task;
 import com.khomishchak.giveAndHave.model.Transaction;
 import com.khomishchak.giveAndHave.model.User;
-import com.khomishchak.giveAndHave.model.security.AuthenticationResponse;
 import com.khomishchak.giveAndHave.service.TaskService;
 import com.khomishchak.giveAndHave.service.TransactionService;
 import com.khomishchak.giveAndHave.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/")
 @RestController
-public class ApiController {
+public class UserController {
 
     private UserService userService;
     private TransactionService transactionService;
     private TaskService taskService;
 
     @Autowired
-    public ApiController(UserService userService, TransactionService transactionService, TaskService taskService) {
+    public UserController(UserService userService, TransactionService transactionService, TaskService taskService) {
         this.userService = userService;
         this.transactionService = transactionService;
         this.taskService = taskService;
-    }
-
-    @PostMapping("/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    public AuthenticationResponse create(@RequestBody UserDto userDto) {
-
-        return userService.createUser(userDto);
-    }
-
-    @GetMapping("/hello")
-    public ResponseEntity<String> hello() {
-        return ResponseEntity.ok("Hello World");
     }
 
     @DeleteMapping("/delete/{id}")

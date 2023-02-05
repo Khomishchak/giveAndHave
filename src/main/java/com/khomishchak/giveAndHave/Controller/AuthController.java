@@ -1,33 +1,35 @@
 package com.khomishchak.giveAndHave.Controller;
 
+import com.khomishchak.giveAndHave.dto.UserDto;
 import com.khomishchak.giveAndHave.model.security.AuthenticationResponse;
 import com.khomishchak.giveAndHave.model.security.LoginRequest;
 import com.khomishchak.giveAndHave.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/view")
-public class ViewController {
+@RequestMapping("/api/auth")
+public class AuthController {
 
-    private AuthenticationManager authenticationManager;
     private UserService userService;
 
     @Autowired
-    public ViewController(AuthenticationManager authenticationManager, UserService userService) {
-        this.authenticationManager = authenticationManager;
+    public AuthController(UserService userService) {
         this.userService = userService;
+    }
+
+    @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public AuthenticationResponse create(@RequestBody UserDto userDto) {
+
+        return userService.createUser(userDto);
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest loginRequest) {
 
         return ResponseEntity.ok(userService.authenticate(loginRequest)) ;
-
-//        return new ResponseEntity<AuthenticationResponse>(HttpStatus.OK);
     }
 }

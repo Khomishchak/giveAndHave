@@ -28,10 +28,6 @@ public class UserDto {
 
     private int age;
 
-    private int balance = 100;
-
-    private boolean isVerified = false;
-
     private UserRole userRole;
 
     private Set<Transaction> transactions = new HashSet<>();

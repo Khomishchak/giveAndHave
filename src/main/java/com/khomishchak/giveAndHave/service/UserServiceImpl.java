@@ -1,7 +1,6 @@
 package com.khomishchak.giveAndHave.service;
 
 import com.khomishchak.giveAndHave.dto.UserDto;
-import com.khomishchak.giveAndHave.model.Task;
 import com.khomishchak.giveAndHave.model.Transaction;
 import com.khomishchak.giveAndHave.model.User;
 import com.khomishchak.giveAndHave.model.UserRole;
@@ -10,8 +9,6 @@ import com.khomishchak.giveAndHave.model.security.LoginRequest;
 import com.khomishchak.giveAndHave.repository.UserRepository;
 import com.khomishchak.giveAndHave.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -45,8 +42,6 @@ public class UserServiceImpl implements UserService{
                 .email(userDto.getEmail())
                 .groupName(userDto.getGroupName())
                 .age(userDto.getAge())
-                .balance(userDto.getBalance())
-                .isVerified(userDto.isVerified())
                 .transactions(userDto.getTransactions())
                 .tasks(userDto.getTasks())
                 .userRole(UserRole.ROLE_USER)
@@ -54,7 +49,7 @@ public class UserServiceImpl implements UserService{
 
         userRepository.save(user);
 
-        String jwtToken = jwtService.getToken(new UserDetailsImpl(user));
+        String jwtToken = jwtService.createToken(new UserDetailsImpl(user));
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
@@ -71,7 +66,7 @@ public class UserServiceImpl implements UserService{
         );
 
         User user = findByName(loginRequest.getName());
-        String jwtToken = jwtService.getToken(new UserDetailsImpl(user));
+        String jwtToken = jwtService.createToken(new UserDetailsImpl(user));
 
         return AuthenticationResponse.builder()
                 .token(jwtToken)
