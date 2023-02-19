@@ -27,7 +27,7 @@ public class User {
     private String groupName;
 
     private int age;
-    private int balance = 100;
+    private int balance;
 
     private boolean isVerified = false;
 
@@ -55,4 +55,6 @@ public class User {
                 .tasks(tasks)
                 .build();
     }
+
+
 }
