@@ -19,6 +19,8 @@ public class JwtServiceImpl implements JwtService{
 
     private final static String SECRET_KEY = "586E3272357538782F4125442A472D4B6150645367566B597033733676397924";
 
+    private final static long EXPIRATION_TIME = 1000 * 60 * 60 * 6; //6 hours
+
     @Override
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -46,7 +48,7 @@ public class JwtServiceImpl implements JwtService{
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1800000))
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

@@ -7,8 +7,9 @@ import com.khomishchak.giveAndHave.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.List;
 
 @Service
 public class TransactionServiceImpl implements TransactionService{
@@ -28,14 +29,20 @@ public class TransactionServiceImpl implements TransactionService{
 
         Calendar calendar = Calendar.getInstance();
 
-        Date date = calendar.getTime();
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
         Transaction transaction = Transaction.builder()
-                .created_at(date.getTime())
+                .createdAt(timestamp)
                 .cost(cost)
                 .build();
 
         return submitTransaction(sender, receiver, transaction);
+    }
+
+    @Override
+    public List<Transaction> getAllTransaction() {
+
+        return transactionRepository.findAll();
     }
 
     private Transaction submitTransaction(User sender, User receiver, Transaction transaction)  {

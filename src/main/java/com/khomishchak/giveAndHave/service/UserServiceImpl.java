@@ -19,6 +19,8 @@ import java.util.*;
 @Service
 public class UserServiceImpl implements UserService{
 
+    private static final int INITIAL_BALANCE = 100;
+
     private UserRepository userRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private JwtService jwtService;
@@ -42,6 +44,7 @@ public class UserServiceImpl implements UserService{
                 .email(userDto.getEmail())
                 .groupName(userDto.getGroupName())
                 .age(userDto.getAge())
+                .balance(INITIAL_BALANCE)
                 .transactions(userDto.getTransactions())
                 .tasks(userDto.getTasks())
                 .userRole(UserRole.ROLE_USER)
@@ -53,6 +56,11 @@ public class UserServiceImpl implements UserService{
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     @Override
