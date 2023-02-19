@@ -1,4 +1,4 @@
-package com.khomishchak.giveAndHave.Controller;
+package com.khomishchak.giveAndHave.controller;
 
 import com.khomishchak.giveAndHave.dto.UserDto;
 import com.khomishchak.giveAndHave.model.security.AuthenticationResponse;
@@ -6,7 +6,6 @@ import com.khomishchak.giveAndHave.model.security.LoginRequest;
 import com.khomishchak.giveAndHave.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,7 +19,7 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public AuthenticationResponse create(@RequestBody UserDto userDto) {
 
@@ -28,8 +27,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest loginRequest) {
+    @ResponseStatus(HttpStatus.OK)
+    public AuthenticationResponse login(@RequestBody LoginRequest loginRequest) {
 
-        return ResponseEntity.ok(userService.authenticate(loginRequest)) ;
+        return userService.authenticate(loginRequest);
     }
 }
