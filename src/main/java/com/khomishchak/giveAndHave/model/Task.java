@@ -18,9 +18,11 @@ public class Task {
     private Long id;
 
     private String subject;
-    private String taskDescription;
+    private String description;
 
     private int price;
+
+    private boolean isTaskActive;
 
     @ManyToOne
     @JsonIgnore

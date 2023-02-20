@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 public class TaskController {
@@ -28,5 +30,12 @@ public class TaskController {
         User user = userService.findById(userId);
 
         return taskService.createTask(task, user);
+    }
+
+    @GetMapping("/get/task/all")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Task> getTasks() {
+
+        return taskService.getAllTasks();
     }
 }
