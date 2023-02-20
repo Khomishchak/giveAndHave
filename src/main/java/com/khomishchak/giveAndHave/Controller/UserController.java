@@ -47,4 +47,10 @@ public class UserController {
 
         userService.deleteUser(id);
     }
+
+    @GetMapping("/get/pairInTransaction/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<User> getSenderAndReceiver(@PathVariable Long id) {
+        return userService.getSenderAndReceiver(id);
+    }
 }

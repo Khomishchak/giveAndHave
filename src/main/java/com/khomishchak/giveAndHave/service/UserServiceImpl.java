@@ -64,6 +64,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public List<User> getSenderAndReceiver(Long transactionId) {
+
+        return findPairByIdsOrThrowException(transactionId);
+    }
+
+    @Override
     public AuthenticationResponse authenticate(LoginRequest loginRequest) {
 
         authenticationManager.authenticate(
@@ -129,4 +135,19 @@ public class UserServiceImpl implements UserService{
         return userRepository.findByName(name)
                 .orElseThrow(() -> new IllegalArgumentException("User not found!"));
     }
+
+    private List<User> findPairByIdsOrThrowException(Long transactionId) {
+
+        List<Long> usersIds = userRepository.findSenderAndReceiver(transactionId);
+
+        List<User> pairInTransaction = new ArrayList<>();
+
+        usersIds.forEach((id) -> pairInTransaction.add(userRepository.findById(id)
+                .orElseThrow(
+                        () -> new IllegalArgumentException("User Not Found")
+                )));
+
+        return pairInTransaction;
+    }
+
 }

@@ -16,6 +16,8 @@ public interface UserService {
 
     public List<User> getAllUsers();
 
+    public List<User> getSenderAndReceiver(Long transactionId);
+
     public AuthenticationResponse authenticate(LoginRequest loginRequest);
 
     public void deleteUser(Long id);
