@@ -7,8 +7,8 @@ import com.khomishchak.giveAndHave.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.util.Calendar;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -27,12 +27,13 @@ public class TransactionServiceImpl implements TransactionService{
     @Override
     public Transaction createTransaction(User sender, User receiver, int cost) {
 
-        Calendar calendar = Calendar.getInstance();
+        LocalDateTime timestamp = LocalDateTime.now();
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        String formattedTimestamp = timestamp.format(myFormatObj);
 
         Transaction transaction = Transaction.builder()
-                .createdAt(timestamp)
+                .createdAt(formattedTimestamp)
                 .cost(cost)
                 .build();
 
