@@ -43,18 +43,4 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Task> tasks;
-
-    public UserDto toDto () {
-        return UserDto.builder()
-                .name(name)
-                .password(password)
-                .email(email)
-                .groupName(groupName)
-                .age(age)
-                .transactions(transactions)
-                .tasks(tasks)
-                .build();
-    }
-
-
 }
