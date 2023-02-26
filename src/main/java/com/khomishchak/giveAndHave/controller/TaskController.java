@@ -38,4 +38,11 @@ public class TaskController {
 
         return taskService.getAllTasks();
     }
+
+
+    @PostMapping("/post/request/task/{userId}/{taskId}")
+    public void postRequestForTask(@PathVariable Long userId, @PathVariable Long taskId) {
+
+        taskService.postRequestForTask(userId, taskId);
+    }
 }

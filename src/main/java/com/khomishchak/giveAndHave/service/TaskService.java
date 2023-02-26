@@ -12,4 +12,6 @@ public interface TaskService {
     public Task createTask(Task task, User user);
 
     public List<Task> getAllTasks();
+
+    public void postRequestForTask(Long userId, Long taskId);
 }

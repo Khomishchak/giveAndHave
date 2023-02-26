@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,4 +29,8 @@ public class Task {
     @ManyToOne
     @JsonIgnore
     private User user;
+
+    @OneToMany
+    @JsonIgnore
+    private List<Application> applications;
 }
