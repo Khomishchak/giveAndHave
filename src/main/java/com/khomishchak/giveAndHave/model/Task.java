@@ -1,6 +1,7 @@
 package com.khomishchak.giveAndHave.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "tasks")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Task {
 
     @Id
@@ -29,8 +31,5 @@ public class Task {
     @ManyToOne
     @JsonIgnore
     private User user;
-
-    @OneToMany
-    @JsonIgnore
-    private List<Application> applications;
 }
+

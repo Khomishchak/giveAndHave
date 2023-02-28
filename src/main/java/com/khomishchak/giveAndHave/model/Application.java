@@ -23,6 +23,7 @@ public class Application {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "task_id")
+    @JoinColumn(name = "task_id", referencedColumnName = "id")
     private Task task;
 }
+

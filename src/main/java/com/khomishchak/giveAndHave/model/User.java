@@ -1,6 +1,6 @@
 package com.khomishchak.giveAndHave.model;
 
-import com.khomishchak.giveAndHave.dto.UserDto;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,6 +13,7 @@ import java.util.*;
 @Getter
 @Setter
 @Table(name = "users")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
 
     @Id
@@ -23,7 +24,7 @@ public class User {
     private String password;
     private String email;
 
-    @Column(name = "group")
+    @Column(name = "group_name")
     private String groupName;
 
     private int age;
@@ -44,3 +45,4 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Task> tasks;
 }
+
