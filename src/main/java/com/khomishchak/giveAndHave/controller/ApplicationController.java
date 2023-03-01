@@ -1,6 +1,7 @@
 package com.khomishchak.giveAndHave.controller;
 
 import com.khomishchak.giveAndHave.model.Application;
+import com.khomishchak.giveAndHave.model.User;
 import com.khomishchak.giveAndHave.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,5 +30,11 @@ public class ApplicationController {
     @ResponseStatus(HttpStatus.OK)
     public int getNewMessagesAmount(@PathVariable Long id) {
         return applicationService.findNewMessagesAmount(id);
+    }
+
+    @PostMapping("/accept/user-for-task/{taskId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void acceptUser(@PathVariable Long taskId ,@RequestBody User user) {
+        applicationService.acceptUser(taskId, user.getId());
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
@@ -24,4 +25,9 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
 	    "SELECT t.id FROM tasks t " +
 	    "WHERE t.user_id = :userId)", nativeQuery = true)
     public List<Application> findApplicationsByUserId(@Param("userId") Long userId);
+
+    public List<Application> findAllByTaskId(Long taskId);
+
+    @Query(value = "SELECT * FROM applications a WHERE a.user_id = :userId AND a.task_id = :taskId", nativeQuery = true)
+    public Optional<Application> findByUserIdAndTaskId(@Param("userId") Long userId, @Param("taskId")Long taskId);
 }
