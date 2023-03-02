@@ -1,6 +1,5 @@
 package com.khomishchak.giveAndHave.controller;
 
-import com.khomishchak.giveAndHave.model.Transaction;
 import com.khomishchak.giveAndHave.model.User;
 import com.khomishchak.giveAndHave.service.TaskService;
 import com.khomishchak.giveAndHave.service.TransactionService;
@@ -34,10 +33,9 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @GetMapping("/get/user")
+    @GetMapping("/get/user/current")
     @ResponseStatus(HttpStatus.OK)
     public User getCurrentUser(Authentication authentication ) {
-
         return userService.findByName(authentication.getName());
     }
 
@@ -52,5 +50,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public List<User> getSenderAndReceiver(@PathVariable Long id) {
         return userService.getSenderAndReceiver(id);
+    }
+
+    @PutMapping("/update/user")
+    @ResponseStatus(HttpStatus.OK)
+    public User updateUser(@RequestBody User user) {
+        return this.userService.updateUser(user);
     }
 }

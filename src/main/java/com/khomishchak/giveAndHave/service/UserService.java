@@ -28,4 +28,6 @@ public interface UserService {
 
 
     public Transaction assignTransactionToUsers(User sender, User receiver, Transaction transaction);
+
+    public User updateUser(User user);
 }

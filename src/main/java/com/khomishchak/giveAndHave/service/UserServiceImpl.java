@@ -9,6 +9,7 @@ import com.khomishchak.giveAndHave.model.security.LoginRequest;
 import com.khomishchak.giveAndHave.repository.UserRepository;
 import com.khomishchak.giveAndHave.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -122,6 +123,23 @@ public class UserServiceImpl implements UserService{
         userRepository.save(receiver);
 
         return transaction;
+    }
+
+    @Override
+    public User updateUser(User user) {
+
+        User updateUser = userRepository.findById(user.getId())
+                .map(user1 -> {
+                    user1.setEmail(user.getEmail());
+                    user1.setGroupName(user.getGroupName());
+                    user1.setName(user.getName());
+                    return userRepository.save(user1);
+                })
+                .orElseThrow(
+                        IllegalArgumentException::new
+                );
+
+        return user;
     }
 
     private User findByIdOrThrowException(Long id) {
