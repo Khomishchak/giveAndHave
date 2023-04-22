@@ -35,7 +35,7 @@ public class TaskController {
     @GetMapping("/get/task/all")
     @ResponseStatus(HttpStatus.OK)
     public List<Task> getTasks() {
-
+        System.out.println(taskService.getAllTasks());
         return taskService.getAllTasks();
     }
 
@@ -44,5 +44,12 @@ public class TaskController {
     public void postRequestForTask(@PathVariable Long userId, @PathVariable Long taskId) {
 
         taskService.postRequestForTask(userId, taskId);
+    }
+
+    @GetMapping("/get/task_id/all/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Long> findUserTasks(@PathVariable Long userId) {
+
+        return taskService.getAllTaskIdsByUserId(userId);
     }
 }

@@ -13,5 +13,7 @@ public interface TaskService {
 
     public List<Task> getAllTasks();
 
+    public List<Long> getAllTaskIdsByUserId(Long userId);
+
     public void postRequestForTask(Long userId, Long taskId);
 }
