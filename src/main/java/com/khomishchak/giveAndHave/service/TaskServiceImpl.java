@@ -69,13 +69,18 @@ public class TaskServiceImpl implements TaskService{
 
     private Task findTaskOrThrow(Long id) {
 
-        return taskRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User not found!"));
+        return findTaskByIdOrThrowException(id);
     }
 
     private User findUserByIdOrThrowException(Long id) {
 
         return userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User not found!"));
+    }
+
+    private Task findTaskByIdOrThrowException(Long id) {
+
+        return taskRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Task not found!"));
     }
 }

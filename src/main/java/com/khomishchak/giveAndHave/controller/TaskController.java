@@ -35,7 +35,7 @@ public class TaskController {
     @GetMapping("/get/task/all")
     @ResponseStatus(HttpStatus.OK)
     public List<Task> getTasks() {
-        System.out.println(taskService.getAllTasks());
+
         return taskService.getAllTasks();
     }
 
