@@ -40,6 +40,12 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
+    public List<Long> getAllTaskIdsByUserId(Long userId) {
+
+        return taskRepository.findTaskIdByUserId(userId);
+    }
+
+    @Override
     public void postRequestForTask(Long userId, Long taskId) {
 
         User user = findUserByIdOrThrowException(userId);
