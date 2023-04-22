@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class TaskServiceImpl implements TaskService{
@@ -39,13 +40,21 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
+    public List<Long> getAllTaskIdsByUserId(Long userId) {
+
+        return taskRepository.findTaskIdByUserId(userId);
+    }
+
+    @Override
     public void postRequestForTask(Long userId, Long taskId) {
 
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new IllegalArgumentException()
-        );
+        User user = findUserByIdOrThrowException(userId);
 
         Task task = findTaskOrThrow(taskId);
+
+        if(Objects.equals(userId, task.getUser().getId())) {
+            return;
+        }
 
         Application application = Application.builder()
                 .user(user)
@@ -57,7 +66,18 @@ public class TaskServiceImpl implements TaskService{
 
     private Task findTaskOrThrow(Long id) {
 
-        return taskRepository.findById(id).
-            orElseThrow(() -> new IllegalArgumentException());
+        return findTaskByIdOrThrowException(id);
+    }
+
+    private User findUserByIdOrThrowException(Long id) {
+
+        return userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User not found!"));
+    }
+
+    private Task findTaskByIdOrThrowException(Long id) {
+
+        return taskRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Task not found!"));
     }
 }
