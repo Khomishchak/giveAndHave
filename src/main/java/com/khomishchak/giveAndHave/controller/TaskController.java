@@ -45,4 +45,11 @@ public class TaskController {
 
         taskService.postRequestForTask(userId, taskId);
     }
+
+    @GetMapping("/get/task_id/all/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Long> findUserTasks(@PathVariable Long userId) {
+
+        return taskService.getAllTaskIdsByUserId(userId);
+    }
 }
