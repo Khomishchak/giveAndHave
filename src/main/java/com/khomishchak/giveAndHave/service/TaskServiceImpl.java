@@ -40,15 +40,6 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
-    public List<Long> getAllTaskIdsByUserId(Long userId) {
-
-        for(Long id : taskRepository.findTaskIdByUserId(userId)) {
-            System.out.println(id);
-        }
-        return taskRepository.findTaskIdByUserId(userId);
-    }
-
-    @Override
     public void postRequestForTask(Long userId, Long taskId) {
 
         User user = findUserByIdOrThrowException(userId);
