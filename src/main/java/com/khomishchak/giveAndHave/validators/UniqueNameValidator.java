@@ -1,6 +1,7 @@
 package com.khomishchak.giveAndHave.validators;
 
 import com.khomishchak.giveAndHave.annotations.UniqueName;
+import com.khomishchak.giveAndHave.model.User;
 import com.khomishchak.giveAndHave.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,6 @@ public class UniqueNameValidator implements ConstraintValidator<UniqueName, Stri
 
     @Override
     public boolean isValid(String name, ConstraintValidatorContext cxt) {
-        return userRepository != null && userRepository.findByName(name).isPresent();
+        return userRepository != null && userRepository.findByName(name).isEmpty();
     }
 }
