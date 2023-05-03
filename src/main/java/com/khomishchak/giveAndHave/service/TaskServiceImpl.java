@@ -52,7 +52,8 @@ public class TaskServiceImpl implements TaskService{
 
         Task task = findTaskOrThrow(taskId);
 
-        if(Objects.equals(userId, task.getUser().getId())) {
+        if(Objects.equals(userId, task.getUser().getId()) ||
+                    applicationRepository.findByUserIdAndTaskId(userId, taskId).isPresent()) {
             return;
         }
 
