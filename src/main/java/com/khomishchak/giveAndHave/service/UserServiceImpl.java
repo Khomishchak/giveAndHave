@@ -1,15 +1,14 @@
 package com.khomishchak.giveAndHave.service;
 
-import com.khomishchak.giveAndHave.dto.UserDto;
 import com.khomishchak.giveAndHave.model.Transaction;
 import com.khomishchak.giveAndHave.model.User;
 import com.khomishchak.giveAndHave.model.UserRole;
 import com.khomishchak.giveAndHave.model.security.AuthenticationResponse;
 import com.khomishchak.giveAndHave.model.security.LoginRequest;
+import com.khomishchak.giveAndHave.model.security.RegistrationRequest;
 import com.khomishchak.giveAndHave.repository.UserRepository;
 import com.khomishchak.giveAndHave.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -37,17 +36,15 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public AuthenticationResponse createUser(UserDto userDto) {
+    public AuthenticationResponse createUser(RegistrationRequest registrationRequest) {
 
         User user = User.builder()
-                .name(userDto.getName())
-                .password(bCryptPasswordEncoder.encode(userDto.getPassword()))
-                .email(userDto.getEmail())
-                .groupName(userDto.getGroupName())
-                .age(userDto.getAge())
+                .name(registrationRequest.getName())
+                .password(bCryptPasswordEncoder.encode(registrationRequest.getPassword()))
+                .email(registrationRequest.getEmail())
+                .groupName(registrationRequest.getGroupName())
+                .age(registrationRequest.getAge())
                 .balance(INITIAL_BALANCE)
-                .transactions(userDto.getTransactions())
-                .tasks(userDto.getTasks())
                 .userRole(UserRole.ROLE_USER)
                 .build();
 

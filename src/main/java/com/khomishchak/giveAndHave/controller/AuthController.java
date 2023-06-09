@@ -1,18 +1,22 @@
 package com.khomishchak.giveAndHave.controller;
 
-import com.khomishchak.giveAndHave.dto.UserDto;
 import com.khomishchak.giveAndHave.model.security.AuthenticationResponse;
 import com.khomishchak.giveAndHave.model.security.LoginRequest;
+import com.khomishchak.giveAndHave.model.security.RegistrationRequest;
 import com.khomishchak.giveAndHave.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public AuthController(UserService userService) {
@@ -20,16 +24,20 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
-    public AuthenticationResponse create(@RequestBody UserDto userDto) {
+    public ResponseEntity<?> registerUser(@RequestBody @Valid RegistrationRequest request, BindingResult bindingResult) {
 
-        return userService.createUser(userDto);
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
+        }
+
+        AuthenticationResponse authResponse = userService.createUser(request);
+        return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
     }
 
-    @PostMapping("/login")
-    @ResponseStatus(HttpStatus.OK)
-    public AuthenticationResponse login(@RequestBody LoginRequest loginRequest) {
 
-        return userService.authenticate(loginRequest);
+    @PostMapping("/login")
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest loginRequest) {
+
+        return new ResponseEntity<>(userService.authenticate(loginRequest), HttpStatus.OK);
     }
 }

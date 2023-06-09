@@ -14,6 +14,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByName(String name);
 
+    Optional<User> findByEmail(String email);
+
     @Query(value = "SELECT user_id FROM transaction_users tu " +
             "WHERE tu.transaction_id = :transactionId", nativeQuery = true)
     List<Long> findSenderAndReceiver(@Param("transactionId") Long transactionId);
