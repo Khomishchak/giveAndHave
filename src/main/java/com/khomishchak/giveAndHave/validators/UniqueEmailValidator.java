@@ -11,7 +11,7 @@ import jakarta.validation.ConstraintValidatorContext;
 
 public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, String> {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public UniqueEmailValidator(UserRepository userRepository) {
@@ -20,6 +20,6 @@ public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, St
 
     @Override
     public boolean isValid(String email, ConstraintValidatorContext cxt) {
-        return userRepository != null && userRepository.findByEmail(email).isEmpty();
+        return userRepository.findByEmail(email).isEmpty();
     }
 }

@@ -16,7 +16,7 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public AuthController(UserService userService) {
@@ -24,20 +24,20 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity create(@RequestBody @Valid RegistrationRequest registrationRequest, BindingResult result) {
+    public ResponseEntity<?> registerUser(@RequestBody @Valid RegistrationRequest request, BindingResult bindingResult) {
 
-        if(result.hasErrors()) {
-            return ResponseEntity.badRequest().body(result.getAllErrors());
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
         }
 
-        AuthenticationResponse authenticationResponse = userService.createUser(registrationRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(authenticationResponse);
+        AuthenticationResponse authResponse = userService.createUser(request);
+        return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
     }
 
-    @PostMapping("/login")
-    @ResponseStatus(HttpStatus.OK)
-    public AuthenticationResponse login(@RequestBody LoginRequest loginRequest) {
 
-        return userService.authenticate(loginRequest);
+    @PostMapping("/login")
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest loginRequest) {
+
+        return new ResponseEntity<>(userService.authenticate(loginRequest), HttpStatus.OK);
     }
 }

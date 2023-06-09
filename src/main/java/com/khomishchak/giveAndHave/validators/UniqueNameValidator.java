@@ -11,7 +11,7 @@ import jakarta.validation.ConstraintValidatorContext;
 
 public class UniqueNameValidator implements ConstraintValidator<UniqueName, String> {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public UniqueNameValidator(UserRepository userRepository) {
@@ -20,6 +20,6 @@ public class UniqueNameValidator implements ConstraintValidator<UniqueName, Stri
 
     @Override
     public boolean isValid(String name, ConstraintValidatorContext cxt) {
-        return userRepository != null && userRepository.findByName(name).isEmpty();
+        return userRepository.findByName(name).isEmpty();
     }
 }
