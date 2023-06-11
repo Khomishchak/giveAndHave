@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("/api")
 public class ApplicationController {
 
-    private ApplicationService applicationService;
+    private final ApplicationService applicationService;
 
     @Autowired
     public ApplicationController(ApplicationService applicationService) {

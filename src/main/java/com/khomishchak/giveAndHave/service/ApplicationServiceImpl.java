@@ -15,8 +15,8 @@ import java.util.List;
 @Service
 public class ApplicationServiceImpl implements ApplicationService{
 
-    private ApplicationRepository applicationRepository;
-    private TaskRepository taskRepository;
+    private final ApplicationRepository applicationRepository;
+    private final TaskRepository taskRepository;
 
     @Autowired
     public ApplicationServiceImpl(ApplicationRepository applicationRepository, TaskRepository taskRepository) {

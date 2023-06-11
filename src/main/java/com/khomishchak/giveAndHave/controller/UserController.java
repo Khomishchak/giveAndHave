@@ -15,9 +15,9 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    private UserService userService;
-    private TransactionService transactionService;
-    private TaskService taskService;
+    private final UserService userService;
+    private final TransactionService transactionService;
+    private final TaskService taskService;
 
     @Autowired
     public UserController(UserService userService, TransactionService transactionService, TaskService taskService) {

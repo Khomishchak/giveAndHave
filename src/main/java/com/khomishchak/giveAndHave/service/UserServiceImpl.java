@@ -21,10 +21,10 @@ public class UserServiceImpl implements UserService{
 
     private static final int INITIAL_BALANCE = 100;
 
-    private UserRepository userRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    private JwtService jwtService;
-    private AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder,

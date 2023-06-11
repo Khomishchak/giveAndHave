@@ -14,8 +14,8 @@ import java.util.List;
 @RequestMapping("/api")
 public class TransactionController {
 
-    private UserService userService;
-    private TransactionService transactionService;
+    private final UserService userService;
+    private final TransactionService transactionService;
 
     @Autowired
     public TransactionController(UserService userService, TransactionService transactionService) {
@@ -38,6 +38,9 @@ public class TransactionController {
     @GetMapping("/get/transaction/all")
     @ResponseStatus(HttpStatus.OK)
     public List<Transaction> getLatestTransactions() {
+
+        List.of(5,6,7,8,9).forEach(System.out::println);
+
 
         return transactionService.getAllTransaction();
     }

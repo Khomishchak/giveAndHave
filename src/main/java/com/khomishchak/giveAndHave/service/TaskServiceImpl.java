@@ -15,9 +15,9 @@ import java.util.Objects;
 @Service
 public class TaskServiceImpl implements TaskService{
 
-    private TaskRepository taskRepository;
-    private ApplicationRepository applicationRepository;
-    private UserRepository userRepository;
+    private final TaskRepository taskRepository;
+    private final ApplicationRepository applicationRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public TaskServiceImpl(TaskRepository taskRepository, ApplicationRepository applicationRepository,

@@ -15,8 +15,8 @@ import java.util.List;
 public class TaskController {
 
 
-    private UserService userService;
-    private TaskService taskService;
+    private final UserService userService;
+    private final TaskService taskService;
 
     @Autowired
     public TaskController(UserService userService, TaskService taskService) {
