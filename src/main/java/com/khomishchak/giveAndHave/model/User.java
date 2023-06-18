@@ -40,7 +40,7 @@ public class User {
             name = "transaction_users",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "transaction_id"))
-    private Set<Transaction> transactions;
+    private Set<Transaction> transactions = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Task> tasks;

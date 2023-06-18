@@ -107,14 +107,8 @@ public class UserServiceImpl implements UserService{
     @Override
     public Transaction assignTransactionToUsers(User sender, User receiver, Transaction transaction) {
 
-        Set<Transaction> senderTransactions = sender.getTransactions();
-        Set<Transaction> receiverTransactions = receiver.getTransactions();
-
-        senderTransactions.add(transaction);
-        receiverTransactions.add(transaction);
-
-        sender.setTransactions(senderTransactions);
-        receiver.setTransactions(receiverTransactions);
+        sender.getTransactions().add(transaction);
+        receiver.getTransactions().add(transaction);
 
         userRepository.save(sender);
         userRepository.save(receiver);
