@@ -15,16 +15,13 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
 
 
     @Query(value = "SELECT COUNT(a.id) FROM applications a " +
-            "WHERE a.task_id IN (" +
-            "SELECT t.id FROM tasks t " +
-            "WHERE t.user_id = :userId)" +
+            "WHERE a.user_id = :userId " +
             "AND a.status IS NULL", nativeQuery = true)
     public int findNewMessagesAmount(@Param("userId") Long userId);
 
+
     @Query(value = "SELECT * FROM applications a " +
-        "WHERE a.task_id IN (" +
-	    "SELECT t.id FROM tasks t " +
-	    "WHERE t.user_id = :userId)", nativeQuery = true)
+            "WHERE a.user_id = :userId", nativeQuery = true)
     public List<Application> findApplicationsByUserId(@Param("userId") Long userId);
 
     public List<Application> findAllByTaskId(Long taskId);
