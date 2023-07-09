@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class EmitterServiceImpl implements  EmitterService{
 
-    List<SseEmitter> emitters = new ArrayList<>();
+    private final List<SseEmitter> emitters = new ArrayList<>();
 
     @Override
     public void addEmitter(SseEmitter emitter) {

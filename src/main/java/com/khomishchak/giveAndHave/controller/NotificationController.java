@@ -17,6 +17,8 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @RequestMapping("/api")
 public class NotificationController {
 
+    private final static long TIME_OUT_TIME_FOR_EMITTER = 24 * 60 * 60 * 1000l;
+
     private EmitterService emitterService;
 
     @Autowired
@@ -25,16 +27,16 @@ public class NotificationController {
     }
 
     @GetMapping("/subscription")
-    public SseEmitter subscribe() {
+    public SseEmitter subscribeForNotifications() {
 
-        SseEmitter sseEmitter = new SseEmitter(24 * 60 * 60 * 1000l);
+        SseEmitter sseEmitter = new SseEmitter(TIME_OUT_TIME_FOR_EMITTER);
         emitterService.addEmitter(sseEmitter);
 
         return sseEmitter;
     }
 
     @PostMapping("/notification/{name}")
-    public ResponseEntity<?> send(@PathVariable String name, @RequestBody NotificationRequest request) {
+    public ResponseEntity<?> sendNotification(@PathVariable String name, @RequestBody NotificationRequest request) {
         emitterService.pushNotification(name, request.getFrom(), request.getMessage());
         return ResponseEntity.ok().body("message pushed to user " + name);
     }
